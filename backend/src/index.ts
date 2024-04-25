@@ -1,21 +1,18 @@
 import { Hono } from 'hono'
+import {decode,verify,sign, jwt} from "hono/jwt"
+import { userRoute } from './routes/user'
+import { blogRoute } from './routes/blog'
+const app = new Hono<{
+  Bindings:{
+    DATABASE_URL:string,
+    JWT_SECRET:string,
+  }
+}>()
 
-const app = new Hono()
+app.route("api/v1/user",userRoute);
+app.route("api/v1/blog",blogRoute);
 
-app.post("/api/v1/signup",(c)=>{
-  return c.text('Hello Hono!')
-})
-app.post("/api/v1/signin",(c)=>{
-  return c.text('Hello Hono!')
-})
-app.post("/api/v1/blog",(c)=>{
-  return c.text('Hello Hono!')
-})  
-app.put("/api/v1/blog",(c)=>{
-  return c.text('Hello Hono!')
-})
-app.get("/api/v1/blog/:id",(c)=>{
-  return c.text('Hello Hono!')
-})
+
+
 
 export default app

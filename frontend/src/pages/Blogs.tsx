@@ -1,11 +1,21 @@
 import { AppBar } from "../components/AppBar"
 import { BlogCard } from "../components/BlogCard"
+import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks"
 
 export const Blogs = () => {
     const {loading,blogs}=useBlogs();
     if(loading){//TODO ADD SKELETON
-        return <div>Loading...</div>;
+        return <div className="h-screen w-full flex flex-col justify-center items-center">
+            <BlogSkeleton />
+            <br />
+            <BlogSkeleton />
+            <br />
+            <BlogSkeleton />
+            <br />
+            <BlogSkeleton />
+            <br />
+        </div>
     }
     // console.log(blogs)
     return (

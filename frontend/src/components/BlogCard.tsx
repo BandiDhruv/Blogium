@@ -1,14 +1,18 @@
+import { Link } from "react-router-dom"
+
 interface BlogCardProps{
+    id:string,
     authorName:string,
     title:string,
     content:string,
     publishedDate:string
 }
-export const BlogCard = ({authorName,title,content,publishedDate}:BlogCardProps) => {
-    return <div className="border-b border-slate-200 p-4">
+export const BlogCard = ({authorName,title,content,publishedDate,id}:BlogCardProps) => {
+    return <Link to={`/blog/${id}`}>
+    <div className="border-b border-slate-200 p-4 w-screen max-w-screen-md cursor-pointer">
         <div className="flex items-center">
             <div className="flex justify-center flex-col">
-                < Avatar name={authorName}/> 
+                < Avatar  name={authorName}/> 
             </div>
             <div className="font-extralight pl-2 ">
                 | {authorName} |
@@ -27,9 +31,11 @@ export const BlogCard = ({authorName,title,content,publishedDate}:BlogCardProps)
             {`${Math.ceil(content.length/100)} minute(s) read`}
         </div>
     </div>
+    </Link>
+
 }
-function Avatar ({name}:{name:string}){
-    return <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+export function Avatar ({name}:{name:string}){
+    return <div className={`relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-300 rounded-full dark:bg-gray-600`}>
     <span className="font-medium text-gray-600 dark:text-gray-300">{name[0]}</span>
 </div>
 }

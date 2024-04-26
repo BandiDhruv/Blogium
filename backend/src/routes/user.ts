@@ -27,12 +27,13 @@ export const userRoute= new Hono<{
       try {
           const user = await prisma.user.create({
               data: {
+                  name: body.name,
                   email: body.email,
                   password: body.password
               }
           });
           const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-          return c.json({ jwt });
+          return c.json({ token:jwt });
       } catch(e) {
           c.status(400);
       console.log(e)
@@ -64,7 +65,7 @@ export const userRoute= new Hono<{
     }
     
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ jwt });
+    return c.json({ token:jwt });
   }catch(e){
     console.log(e);
     c.status(411);

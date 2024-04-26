@@ -1,0 +1,5 @@
+why aiven->
+gives connection url for postgress server on the internet
+cloudfare workers-> serverless backend
+backend is deployed everywhere be it in singapore,india,etc to get access faster
+why prisma->gives connection pool that finally connects to database ( postgres ) because postgress does not support 1000 connections so that is why a connection pool needed  

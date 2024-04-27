@@ -97,6 +97,7 @@ blogRoute.post("/",async(c)=>{
                 author:{
                     select:{
                         name:true,
+                        id:true,
                     }
                 },
                 id:true,
@@ -129,6 +130,7 @@ blogRoute.post("/",async(c)=>{
                 author:{
                     select:{
                         name:true,
+                        id:true,
                     }
                 },
 

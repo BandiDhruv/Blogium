@@ -8,6 +8,7 @@ export interface Blog{
     id:string,
     author:{
         name:string,
+        id:string,
     }
 }
 export const useBlog=({id}:{id:string}) => {
@@ -37,7 +38,31 @@ export const useBlog=({id}:{id:string}) => {
         loading,blog
     }
 }
-
+ export const useGetUser = () =>{
+    const [userId,setUserId]=useState<string>('');
+    const token=localStorage.getItem("token");
+    const extractedString = token?.slice(1, -1);
+    async function getUserId(){
+        try{    
+            const response=await axios.get(`${BACKEND_URL}/api/v1/user/getUser`,{
+                headers:{
+                    Authorization: `bearer ${extractedString}`
+                }
+            })
+            if(response.status===200){
+                setUserId(response.data.id);
+            }
+        }catch(e){
+            alert(e);
+        }
+    }
+    useEffect(()=>{
+        getUserId();
+    },[])
+    return {
+        userId
+    }
+ }
 export const useBlogs = () =>{
     const [loading,setLoading]=useState<Boolean>(true);
     const [blogs,setBlogs]=useState<Blog[]>([]);

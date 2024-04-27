@@ -12,7 +12,24 @@ export const userRoute= new Hono<{
     }
   }>()
 
-
+  userRoute.get('/getUser',async(c)=>{
+    const header =c.req.header("authorization") || "";
+    const token = header && header.split(" ")[1]
+    try{
+      const response=await verify(token,c.env.JWT_SECRET)
+      if(response){
+        c.status(200);
+        return c.json({id:response.id})
+      }
+      else {
+        c.status(411)
+        return c.json({message:"forbidden"})
+      }
+    }catch(e){
+        c.status(403);
+        return c.json({message:"Could Not Veify You"});
+    }
+  })
   
   userRoute.post('/signup', async (c) => {
       const prisma = new PrismaClient({

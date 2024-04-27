@@ -9,7 +9,7 @@ export const Blog = () => {
   if(loading || !blog){
     return <div className="h-screen w-full flex flex-col justify-center items-center"><Spinner /></div>
   }
-
+  
   return (
     <div>
       <BlogDetail blog={blog}/>

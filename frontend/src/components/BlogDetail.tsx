@@ -1,16 +1,26 @@
-import { Blog } from "../hooks"
+import { Blog, useGetUser } from "../hooks"
 import { AppBar } from "./AppBar"
 import { Avatar } from "./BlogCard"
 
 
 export const BlogDetail = ({blog}:{blog:Blog}) =>{
+    const { userId }=useGetUser();
+    // console.log(userId)
     return <div>
         <AppBar />
         <div className="flex justify-center">
             <div className="grid grid-cols-12 px-10 py-8 w-full max-w-screen-xl ">
                 <div className="col-span-8 ">
-                    <div className="text-5xl font-extrabold">
-                        {blog.title}
+                    <div className="flex justify-between text-5xl font-extrabold">
+                        <div>
+                            {blog.title}
+                        </div>
+                        {
+                            userId === blog.author.id && 
+                            <div className="mr-3">
+                            .
+                            </div>
+                        }
                     </div>
                     <div className="text-slate-500 pt-2">
                         Posted On 2nd December 2023

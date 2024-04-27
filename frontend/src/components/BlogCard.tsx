@@ -28,7 +28,7 @@ export const BlogCard = ({authorName,title,content,publishedDate,id}:BlogCardPro
             {content.slice(0,100)+"..."} 
         </div>
         <div className="text-slate-400 text-sm font-500 pt-3">
-            {`${Math.ceil(content.length/100)} minute(s) read`}
+            {`${Math.ceil(content.length/200)} minute(s) read`}
         </div>
     </div>
     </Link>

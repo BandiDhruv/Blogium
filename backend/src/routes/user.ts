@@ -15,11 +15,19 @@ export const userRoute= new Hono<{
   userRoute.get('/getUser',async(c)=>{
     const header =c.req.header("authorization") || "";
     const token = header && header.split(" ")[1]
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env?.DATABASE_URL	,
+    }).$extends(withAccelerate());
     try{
       const response=await verify(token,c.env.JWT_SECRET)
       if(response){
         c.status(200);
-        return c.json({id:response.id})
+        const userData=await prisma.user.findUnique({where:{id:response.id},select:{name:true}})
+        if(userData){ 
+          
+          return c.json({message:"user retrieved successfully",id:response.id,name:userData.name})
+        }
+        else return c.json("cannot retrieve user");
       }
       else {
         c.status(411)

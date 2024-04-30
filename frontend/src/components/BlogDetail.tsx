@@ -1,11 +1,16 @@
+import { useState } from "react";
 import { Blog, useGetUser } from "../hooks"
 import { AppBar } from "./AppBar"
 import { Avatar } from "./BlogCard"
-
+import { FaEdit } from "react-icons/fa";
+import { EditModal } from "./EditModal";
 
 export const BlogDetail = ({blog}:{blog:Blog}) =>{
     const { userId }=useGetUser();
     // console.log(userId)
+    
+    const [modalToggle,setModalToggle]=useState<boolean>(false);
+
     return <div>
         <AppBar />
         <div className="flex justify-center">
@@ -15,15 +20,17 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                         <div>
                             {blog.title}
                         </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                        <div className="text-slate-500 pt-2">
+                            Posted On 2nd December 2023
+                        </div>
                         {
                             userId === blog.author.id && 
-                            <div className="mr-3">
-                            .
+                            <div className="mr-6">
+                                <FaEdit className="cursor-pointer hover:scale-110" onClick={()=>{setModalToggle(!modalToggle)}}/> 
                             </div>
                         }
-                    </div>
-                    <div className="text-slate-500 pt-2">
-                        Posted On 2nd December 2023
                     </div>
                     <div className="text-l font-medium pt-4">
                         {blog.content}
@@ -50,5 +57,8 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                
             </div>
         </div>
+        {modalToggle && 
+            <EditModal blog={blog} modal={modalToggle} setModal={setModalToggle} />
+        }
     </div>
 }

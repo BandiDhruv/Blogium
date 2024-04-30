@@ -38,8 +38,10 @@ export const useBlog=({id}:{id:string}) => {
         loading,blog
     }
 }
+
  export const useGetUser = () =>{
     const [userId,setUserId]=useState<string>('');
+    const [userName,setUserName]=useState<string>('');
     const token=localStorage.getItem("token");
     const extractedString = token?.slice(1, -1);
     async function getUserId(){
@@ -51,6 +53,7 @@ export const useBlog=({id}:{id:string}) => {
             })
             if(response.status===200){
                 setUserId(response.data.id);
+                setUserName(response.data.name);
             }
         }catch(e){
             alert(e);
@@ -60,7 +63,7 @@ export const useBlog=({id}:{id:string}) => {
         getUserId();
     },[])
     return {
-        userId
+        userId,userName
     }
  }
 export const useBlogs = () =>{

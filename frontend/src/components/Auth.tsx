@@ -2,6 +2,7 @@ import { SignupInput } from "@dhruvbandi/blogium-common";
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../config";
+import { BsEye } from "react-icons/bs";
 import axios from "axios";
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
@@ -26,7 +27,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             <div className="flex justify-center items-center">
                 <div className="">
                     <div className="px-10 py-5 flex flex-col items-center">
-                        <div className="text-3xl font-extrabold">Create an account</div>
+                        <div className="text-3xl font-extrabold">{type==="signup"?"Create an account ":"Sign in to your Account"}</div>
                         <div className="text-base text-slate-400">
                             {type==="signup"?"Already have an account?" : "Don't have an account?"}
                             <Link className="pl-2 underline" to={type==="signup"? "/signin":"/signup"}>
@@ -75,30 +76,50 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         </div>
     );
 };
-interface LabelledInputType {
+export interface LabelledInputType {
     label: string;
     placeholder: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     type?: string;
+    defaultV?:string
+    eye?:boolean
+
 }
-function LabelledInput({
+export function LabelledInput({
     label,
     placeholder,
     onChange,
     type,
+    defaultV="",
+    eye=false,
+
 }: LabelledInputType) {
     return (
         <div>
-            <label className="block  text-sm font-medium text-gray-900 dark:text-black ">
+            <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-black ">
                 {label}
             </label>
-            <input
-                onChange={onChange}
-                type={type || "text"}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2.5"
-                placeholder={placeholder}
-                required
-            />
+            <div className="flex relative">
+                <input
+                    id={label}
+                    onChange={onChange}
+                    defaultValue={defaultV}
+                    type={type || "text"}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2.5"
+                    placeholder={placeholder}
+                    required
+                    />
+                {eye && <BsEye className="absolute right-2 top-3 cursor-pointer" onClick={() => {
+                    var x=document.getElementById("Password:");
+                    // console.log(typeof(x))
+                    if(x?.getAttribute("type")=="password"){
+                        x.setAttribute( "type","text")
+                    }
+                    else{
+                        x?.setAttribute("type","password")
+                    }
+                }}/>}
+            </div>
         </div>
     );
 }

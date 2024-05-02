@@ -3,6 +3,7 @@ import { AppBar } from "../components/AppBar"
 import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { LabelledInput } from "../components/Auth";
 
 export const Publish = () =>{
 
@@ -14,8 +15,15 @@ export const Publish = () =>{
         <AppBar />
         <div className="flex justify-center w-full pt-8 ">        
             <div className="max-w-screen-lg w-full">
-                <input onChange={(e)=>{ setTitle(e.target.value)}} type="text"  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-none" placeholder="title" />
-                <TextEditor onChange= {(e)=>{setDescription(e.target.value)}} />
+                <LabelledInput 
+                    label="Title"
+                    type={"text"}
+                    placeholder="title"
+                    onChange={(e) => {
+                        setTitle(e.target.value)
+                    }}
+                />
+                <TextEditor  rows={8} cols={8} onChange= {(e)=>{setDescription(e.target.value)}} label="Post:" placeholder="Write an article"/>
                 <button onClick={async ()=>{const response = await axios.post(`${BACKEND_URL}/api/v1/blog`,{title,content:description},{headers:{Authorization:`bearer ${token}`}});
                   navigate(`/blog/${response.data.id}`)
             }}
@@ -26,13 +34,13 @@ export const Publish = () =>{
         </div>
     </div>
 }
-function TextEditor ({onChange}:{onChange:(e:ChangeEvent<HTMLTextAreaElement>) => void}) {
+export function TextEditor ({onChange,label,placeholder,rows,cols,defaultV}:{defaultV?:string,rows:number,cols:number,placeholder:string,onChange:(e:ChangeEvent<HTMLTextAreaElement>) => void,label:string,}) {
     return <div className="mt-2">
         <div className="w-full mb-4 ">
-            <div className="flex items-center justify-between border">
+            <label>{label}</label>
+            <div className="mt-2 flex items-center justify-between border">
                 <div className="my-2 bg-white rounded-b-lg w-full">
-                    <label className="sr-only">Publish Post</label>
-                    <textarea onChange = {onChange} rows={8} className="block w-full text-sm text-gray-800 bg-white border-0 pl-2 outline-none" placeholder="Write an article" required/>
+                    <textarea defaultValue={defaultV} onChange = {onChange} rows={rows} cols={cols} className="block w-full text-sm text-gray-800 bg-gray-50 pl-2 outline-none" placeholder={placeholder} required/>
                 </div>
             </div>
         </div>

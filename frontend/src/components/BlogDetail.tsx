@@ -6,7 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import { EditModal } from "./EditModal";
 
 export const BlogDetail = ({blog}:{blog:Blog}) =>{
-    const { userId }=useGetUser();
+    const { user }=useGetUser();
     // console.log(userId)
     
     const [modalToggle,setModalToggle]=useState<boolean>(false);
@@ -26,7 +26,7 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                             Posted On 2nd December 2023
                         </div>
                         {
-                            userId === blog.author.id && 
+                            user?.id === blog.author.id && 
                             <div className="mr-6">
                                 <FaEdit className="cursor-pointer hover:scale-110" onClick={()=>{setModalToggle(!modalToggle)}}/> 
                             </div>

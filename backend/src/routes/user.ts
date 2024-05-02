@@ -22,10 +22,10 @@ export const userRoute= new Hono<{
       const response=await verify(token,c.env.JWT_SECRET)
       if(response){
         c.status(200);
-        const userData=await prisma.user.findUnique({where:{id:response.id},select:{name:true}})
+        const userData=await prisma.user.findUnique({where:{id:response.id},})
+        // console.log(userData)
         if(userData){ 
-          
-          return c.json({message:"user retrieved successfully",id:response.id,name:userData.name})
+          return c.json({message:"user retrieved successfully",data:userData})
         }
         else return c.json("cannot retrieve user");
       }

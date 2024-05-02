@@ -39,9 +39,14 @@ export const useBlog=({id}:{id:string}) => {
     }
 }
 
- export const useGetUser = () =>{
-    const [userId,setUserId]=useState<string>('');
-    const [userName,setUserName]=useState<string>('');
+export interface User{
+    id:string,
+    email:string,
+    name?:string,
+    password:string,
+}
+ export const useGetUser =  () =>{
+    const [user,setUser]=useState<User>();
     const token=localStorage.getItem("token");
     const extractedString = token?.slice(1, -1);
     async function getUserId(){
@@ -52,8 +57,7 @@ export const useBlog=({id}:{id:string}) => {
                 }
             })
             if(response.status===200){
-                setUserId(response.data.id);
-                setUserName(response.data.name);
+                setUser(response.data.data);
             }
         }catch(e){
             alert(e);
@@ -63,7 +67,7 @@ export const useBlog=({id}:{id:string}) => {
         getUserId();
     },[])
     return {
-        userId,userName
+        user
     }
  }
 export const useBlogs = () =>{

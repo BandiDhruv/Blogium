@@ -2,4 +2,14 @@ why aiven->
 gives connection url for postgress server on the internet
 cloudfare workers-> serverless backend
 backend is deployed everywhere be it in singapore,india,etc to get access faster
-why prisma->gives connection pool that finally connects to database ( postgres ) because postgress does not support 1000 connections so that is why a connection pool needed  
+prisma is an orm;
+why to choose prisma->popularity,github repo activity how many latest commits happening,community support better .
+why prisma-> prisma accelarate gives connection pool that finally connects to database ( postgres ) because postgress does not support 1000 connections so that is why a connection pool needed  
+##learn about sql injection
+delete nahi krte data you just need to add another column deleted and set it to true
+
+migration cmd->npx primsa migrate dev --name (your message or init daldo)
+
+Aiven for PostgreSQL® is is a fully-managed and hosted relational database service. It's a high-performance data warehouse that offers maximum flexibility and functionality with a variety of advanced extensions out of the box.
+
+Hono framework on cloudfare workers

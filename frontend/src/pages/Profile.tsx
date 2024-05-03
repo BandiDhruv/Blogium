@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { TextEditor } from "./Publish"
 import axios from "axios"
 import { BACKEND_URL } from "../config"
+import { useNavigate } from "react-router-dom"
 
 
 export const Profile = () =>{
@@ -14,12 +15,17 @@ export const Profile = () =>{
     useEffect(()=>{
         setUserData(user as User)
     },[user])
+    const navigate=useNavigate();
     async function handleUpdate(e:React.MouseEvent<HTMLButtonElement>,userDatas:User){
         e.preventDefault();
         console.log(userDatas);
         try{    
             const response=await axios.post(`${BACKEND_URL}/api/v1/user/update-user`,userDatas)
             console.log(response);
+            if(response.status===200){
+                alert('Information Updated Succesfully!');
+                navigate('/blogs')
+            }
         }
         catch(e){
             alert("Could Not Update Details");
@@ -54,7 +60,7 @@ export const Profile = () =>{
                         defaultV={user?.catchPhrase}
                         rows={8}
                         cols={80}
-                        label="CatchPhrase:"
+                        label="CatchPhrase: (Please be detail in CatchPhrase (more than 50 characters) or it won't be shown)"
                         placeholder="Your CatchPhrase..."                   
                         onChange={(e)=>{setUserData((c)=>({
                             ...c,

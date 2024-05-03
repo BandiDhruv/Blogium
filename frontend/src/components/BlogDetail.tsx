@@ -40,7 +40,7 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                     <div className="text-slate-400 font-bold text-lg">
                         Author 
                     </div>
-                    <div className="flex justify-between px-2 gap-4 pt-2 border-t-2">
+                    <div className="flex justify-evenly px-2 gap-4 pt-2 border-t-2">
                         <div>
                             <Avatar name={blog.author.name || "Anonymous"}/>
                         </div>
@@ -49,7 +49,7 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                                 {blog.author.name || "Anonymous"}
                             </div>
                             <div className="pt-2 text-slate-400">
-                                {blog?.author.catchPhrase || "Random Catch Phrase Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum error labore quaerat, id optio aliquid expedita veritatis molestias consequatur. Ratione quis doloribus voluptas voluptates consectetur non hic velit, soluta libero."}
+                                {blog?.author.catchPhrase .length > 50 ? blog?.author.catchPhrase :"Random Catch Phrase Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum error labore quaerat, id optio aliquid expedita veritatis molestias consequatur. Ratione quis doloribus voluptas voluptates consectetur non hic velit, soluta libero."}
                             </div>
                         </div>
                     </div>

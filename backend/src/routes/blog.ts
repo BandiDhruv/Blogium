@@ -98,9 +98,12 @@ blogRoute.post("/",async(c)=>{
                     select:{
                         name:true,
                         id:true,
+                        catchPhrase:true,
                     }
                 },
                 id:true,
+                created_at:true,
+                updated_at:true,
             }
         }) 
         return c.json({
@@ -131,8 +134,11 @@ blogRoute.post("/",async(c)=>{
                     select:{
                         name:true,
                         id:true,
+                        catchPhrase:true,
                     }
                 },
+                created_at:true,
+                updated_at:true,
 
 
             }

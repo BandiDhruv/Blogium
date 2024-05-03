@@ -12,7 +12,10 @@ model User {
   email    String   @unique
   name     String?
   password String
+  catchPhrase String?
   posts    Post[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Post {
@@ -22,4 +25,6 @@ model Post {
   published Boolean  @default(false)
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

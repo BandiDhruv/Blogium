@@ -25,6 +25,7 @@ export const userRoute= new Hono<{
         const userData=await prisma.user.findUnique({where:{id:response.id},})
         // console.log(userData)
         if(userData){ 
+          c.status(200)
           return c.json({message:"user retrieved successfully",data:userData})
         }
         else return c.json("cannot retrieve user");
@@ -38,7 +39,28 @@ export const userRoute= new Hono<{
         return c.json({message:"Could Not Veify You"});
     }
   })
-  
+  userRoute.post('/update-user',async (c) =>{
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env?.DATABASE_URL	,
+    }).$extends(withAccelerate());
+    const body =await c.req.json();
+    try{
+      const user = await prisma.user.update({
+        where : { id : body.id },
+        data : { ...body}
+      })
+      if(!user){
+        c.status(400)
+        return c.json({message:'No User Found'})
+      } 
+      c.status(200);
+      return c.json({message:"User Details Updated Successfully"});
+    }catch(e){
+      c.status(400);
+      console.log(e);
+      return c.json({message:'could not update user now try after sometime'})
+    }
+  })
   userRoute.post('/signup', async (c) => {
       const prisma = new PrismaClient({
           datasourceUrl: c.env?.DATABASE_URL	,

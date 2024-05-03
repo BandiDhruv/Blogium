@@ -5,9 +5,11 @@ interface BlogCardProps{
     authorName:string,
     title:string,
     content:string,
-    publishedDate:string
+    publishedDate:Date
 }
 export const BlogCard = ({authorName,title,content,publishedDate,id}:BlogCardProps) => {
+    const date:string = publishedDate?.toLocaleString().split('T')[0] || "2030-01-01";
+
     return <Link to={`/blog/${id}`}>
     <div className="border-b border-slate-200 p-4 w-full  cursor-pointer">
         <div className="flex items-center">
@@ -18,7 +20,7 @@ export const BlogCard = ({authorName,title,content,publishedDate,id}:BlogCardPro
                 | {authorName} |
             </div>
             <div className="pl-2 font-thin text-slate-500">
-                {publishedDate}
+                {date}
             </div>
         </div>
         <div className="text-xl font-semibold pt-2">

@@ -9,7 +9,10 @@ export interface Blog{
     author:{
         name:string,
         id:string,
+        catchPhrase:string,
     }
+    created_at:Date,
+    updated_at:Date,
 }
 export const useBlog=({id}:{id:string}) => {
     const [loading,setLoading]=useState<Boolean>(true);
@@ -44,6 +47,9 @@ export interface User{
     email:string,
     name?:string,
     password:string,
+    catchPhrase?:string,
+    created_at:Date,
+    updated_at:Date,
 }
  export const useGetUser =  () =>{
     const [user,setUser]=useState<User>();

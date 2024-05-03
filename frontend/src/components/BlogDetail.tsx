@@ -10,7 +10,7 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
     // console.log(userId)
     
     const [modalToggle,setModalToggle]=useState<boolean>(false);
-
+    const date:string = blog.updated_at?.toLocaleString().split('T')[0] || "2030-01-01";
     return <div>
         <AppBar />
         <div className="flex justify-center">
@@ -23,7 +23,7 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="text-slate-500 pt-2">
-                            Posted On 2nd December 2023
+                            {`Posted On ${date} `}
                         </div>
                         {
                             user?.id === blog.author.id && 
@@ -49,7 +49,7 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                                 {blog.author.name || "Anonymous"}
                             </div>
                             <div className="pt-2 text-slate-400">
-                                Random Catch Phrase Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum error labore quaerat, id optio aliquid expedita veritatis molestias consequatur. Ratione quis doloribus voluptas voluptates consectetur non hic velit, soluta libero.
+                                {blog?.author.catchPhrase || "Random Catch Phrase Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum error labore quaerat, id optio aliquid expedita veritatis molestias consequatur. Ratione quis doloribus voluptas voluptates consectetur non hic velit, soluta libero."}
                             </div>
                         </div>
                     </div>

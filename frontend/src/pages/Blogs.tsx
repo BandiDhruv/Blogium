@@ -18,11 +18,12 @@ export const Blogs = () => {
     }
 
     return (
+        
         <>
             <Layout>
                 {
                 blogs && blogs.map(blog =>
-                    <BlogCard key = {blog.id} id={blog.id} authorName={blog.author.name || "Anonymous"} title={blog.title} content={blog.content} publishedDate="24-04-2024" />
+                    <BlogCard key = {blog.id} id={blog.id} authorName={blog.author.name || "Anonymous"} title={blog.title} content={blog.content} publishedDate={blog.created_at} />
                 )}
             </Layout>
         </>

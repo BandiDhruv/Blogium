@@ -3,6 +3,8 @@ import { User, useGetUser } from "../hooks"
 import { LabelledInput } from "../components/Auth"
 import { useEffect, useState } from "react"
 import { TextEditor } from "./Publish"
+import axios from "axios"
+import { BACKEND_URL } from "../config"
 
 
 export const Profile = () =>{
@@ -12,7 +14,17 @@ export const Profile = () =>{
     useEffect(()=>{
         setUserData(user as User)
     },[user])
-
+    async function handleUpdate(e:React.MouseEvent<HTMLButtonElement>,userDatas:User){
+        e.preventDefault();
+        console.log(userDatas);
+        try{    
+            const response=await axios.post(`${BACKEND_URL}/api/v1/user/update-user`,userDatas)
+            console.log(response);
+        }
+        catch(e){
+            alert("Could Not Update Details");
+        }
+    }
     return <>
         <Layout>
             <div className="h-full flex flex-col justify-start items-center p-5 bg-stone-100">
@@ -39,12 +51,15 @@ export const Profile = () =>{
                 </div>
                 <div className="flex flex-row justify-center w-full">
                     <TextEditor
-                        defaultV={"jisdada"}
+                        defaultV={user?.catchPhrase}
                         rows={8}
                         cols={80}
                         label="CatchPhrase:"
                         placeholder="Your CatchPhrase..."                   
-                        onChange={(e)=>{console.log(e.target.value)}}
+                        onChange={(e)=>{setUserData((c)=>({
+                            ...c,
+                            catchPhrase:e.target.value,
+                        }))}}
                         />
                 </div>
                 <div className="flex flex-row justify-center w-full">
@@ -60,7 +75,7 @@ export const Profile = () =>{
                         eye={true}
                         />
                 </div>
-                <button className="mt-4 inline-flex items-center justify-center h-10 w-[100px] text-sm  text-center text-white bg-blue-700 rounded-lg  hover:bg-blue-800" onClick={()=>{console.log(userData)}}>Update</button>
+                <button className="mt-4 inline-flex items-center justify-center h-10 w-[100px] text-sm  text-center text-white bg-blue-700 rounded-lg  hover:bg-blue-800" onClick={(e)=>handleUpdate(e,userData)}>Update</button>
             </div>
         </Layout>
     </> 

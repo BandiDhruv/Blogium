@@ -49,7 +49,7 @@ export const BlogDetail = ({blog}:{blog:Blog}) =>{
                                 {blog.author.name || "Anonymous"}
                             </div>
                             <div className="pt-2 text-slate-400">
-                                {blog?.author.catchPhrase .length > 50 ? blog?.author.catchPhrase :"Random Catch Phrase Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum error labore quaerat, id optio aliquid expedita veritatis molestias consequatur. Ratione quis doloribus voluptas voluptates consectetur non hic velit, soluta libero."}
+                                {blog?.author.catchPhrase && blog?.author.catchPhrase.length > 50 ? blog?.author.catchPhrase :"Random Catch Phrase Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum error labore quaerat, id optio aliquid expedita veritatis molestias consequatur. Ratione quis doloribus voluptas voluptates consectetur non hic velit, soluta libero."}
                             </div>
                         </div>
                     </div>

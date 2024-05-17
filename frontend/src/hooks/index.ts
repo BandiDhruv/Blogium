@@ -31,6 +31,7 @@ export const useBlog=({id}:{id:string}) => {
             setBlog(response.data.blog);
             setLoading(false);
         }catch(er){
+            console.log(er);
             alert("cannot fetch blogs");
         }
     }

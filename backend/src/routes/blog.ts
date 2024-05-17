@@ -14,6 +14,8 @@ export const blogRoute = new Hono<{
   }
 }>();
 
+//TODO -> MAKE A REUSABLE COMPONENT FOR GETBYID SO THAT CODE REDUNDANCY REDUCES
+
 blogRoute.use("/*",async(c,next)=>{
     const header =c.req.header("authorization") || "";
     const token = header.split(" ")[1]
@@ -54,9 +56,29 @@ blogRoute.post("/",async(c)=>{
             authorId:userId
         }
     }) 
-    return c.json({
-        id:blog.id
-    })
+    const returnblog= await prisma.post.findFirst({
+        where:{
+            id:blog.id
+        },
+        select:{
+            title:true,
+            content:true,
+            id:true,
+            author:{
+                select:{
+                    name:true,
+                    id:true,
+                    catchPhrase:true,
+                }
+            },
+            created_at:true,
+            updated_at:true,
+
+
+        }
+    }) 
+    return c.json(returnblog)
+
 })
 
   blogRoute.put("/",async (c)=>{

@@ -22,7 +22,7 @@ export const Publish = () => {
           Authorization: `bearer ${token}`,
         },
       });
-
+      console.log(response.data);
       const newBlog = response.data;
       const cachedBlogs = getWithExpiry('blogs') || [];
       const updatedBlogs = [newBlog, ...cachedBlogs];

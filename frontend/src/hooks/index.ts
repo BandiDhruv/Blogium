@@ -11,6 +11,7 @@ export interface Blog{
         name:string,
         id:string,
         catchPhrase:string,
+        ProfilePic:string,
     }
     created_at:Date,
     updated_at:Date,
@@ -29,6 +30,7 @@ export const useBlog=({id}:{id:string}) => {
                 }
             })
             setBlog(response.data.blog);
+            
             setLoading(false);
         }catch(er){
             console.log(er);
@@ -52,6 +54,7 @@ export interface User{
     catchPhrase?:string,
     created_at:Date,
     updated_at:Date,
+    ProfilePic?:string
 }
  export const useGetUser =  () =>{
     const [user,setUser]=useState<User>();
@@ -90,6 +93,7 @@ export const useBlogs = () =>{
           Authorization: `bearer ${token}`,
         },
       });
+      console.log(response.data.blog)
       setBlogs(response.data.blog);
       setWithExpiry('blogs', response.data.blog, 2 * 60 * 60 * 1000); // 2 hours
       setLoading(false);

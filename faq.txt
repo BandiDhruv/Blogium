@@ -1,9 +1,16 @@
+Hono is an ultrafast web framework built for Cloudflare Workers
+
 why aiven->
 gives connection url for postgress server on the internet
+
 cloudfare workers-> serverless backend
+
 backend is deployed everywhere be it in singapore,india,etc to get access faster
+
 prisma is an orm;
+
 why to choose prisma->popularity,github repo activity how many latest commits happening,community support better .
+
 why prisma-> prisma accelarate gives connection pool that finally connects to database ( postgres ) because postgress does not support 1000 connections so that is why a connection pool needed  
 ##learn about sql injection
 delete nahi krte data you just need to add another column deleted and set it to true

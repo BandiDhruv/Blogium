@@ -121,6 +121,7 @@ blogRoute.post("/",async(c)=>{
                         name:true,
                         id:true,
                         catchPhrase:true,
+                        ProfilePic:true,
                     }
                 },
                 id:true,
@@ -157,6 +158,7 @@ blogRoute.post("/",async(c)=>{
                         name:true,
                         id:true,
                         catchPhrase:true,
+                        ProfilePic:true,
                     }
                 },
                 created_at:true,

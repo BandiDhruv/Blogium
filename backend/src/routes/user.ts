@@ -3,14 +3,34 @@ import {PrismaClient} from "@prisma/client/edge"
 import {withAccelerate} from "@prisma/extension-accelerate"
 import {decode,verify,sign, jwt} from "hono/jwt"
 import { signupInput,signinInput } from "@dhruvbandi/blogium-common";
+import { S3Client,PutObjectCommand,ObjectCannedACL } from "@aws-sdk/client-s3";
+import { HonoS3Storage } from "@hono-storage/s3";
 
 
 export const userRoute= new Hono<{
     Bindings:{
       DATABASE_URL:string,
       JWT_SECRET:string,
+      AWS_ACCESS_KEY_ID:string,
+      AWS_SECRET_ACCESS_KEY:string,
     }
   }>()
+  const BUCKET_NAME="myblogiumbk1";
+  const client = (accessKeyId: string, secretAccessKey: string) =>
+    new S3Client({
+      region: "ap-southeast-2",
+      credentials: {
+        accessKeyId,
+        secretAccessKey,
+      },
+    });
+
+    const storage = new HonoS3Storage({
+      key: (_, file) =>
+        `${file.originalname}-${new Date().getTime()}.${file.extension}`,
+      bucket: BUCKET_NAME,
+      client: (c) => client(c.env.AWS_ACCESS_KEY_ID, c.env.AWS_SECRET_ACCESS_KEY),
+    });
 
   userRoute.get('/getUser',async(c)=>{
     const header =c.req.header("authorization") || "";
@@ -119,3 +139,36 @@ export const userRoute= new Hono<{
     return c.text("Invalid");
   }
 })
+
+userRoute.post("/upload-profilePhoto", storage.single("file"), async (c) => {
+  const uploadedFile = c.var.files.file;
+  const userId = c.req.bodyCache.parsedBody?.userId.toString();
+
+  if (uploadedFile && uploadedFile instanceof File) {
+    const s3Client = client(c.env.AWS_ACCESS_KEY_ID, c.env.AWS_SECRET_ACCESS_KEY);
+
+    const params = {
+      Bucket: BUCKET_NAME,
+      Key: uploadedFile.name,
+      Body: uploadedFile.stream(),
+      ACL: ObjectCannedACL.public_read 
+    };
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env?.DATABASE_URL	,
+  }).$extends(withAccelerate());
+    try {
+      await s3Client.send(new PutObjectCommand(params));
+
+      const uploadedFileUrl = `https://${BUCKET_NAME}.s3.amazonaws.com/${uploadedFile.name}`;
+      const user=await prisma.user.update({
+        where:{id:userId },
+        data: { ProfilePic: uploadedFileUrl },
+      })
+      return c.json({ status: "success", user: user});
+    } catch (err:any) {
+      console.error(err);
+      return c.json({ status: "error", message: err.message });
+    }
+  }
+  return c.json({ status: "error", message: "No file uploaded" });
+});

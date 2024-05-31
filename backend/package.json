@@ -5,6 +5,8 @@
   },
   "dependencies": {
     "@dhruvbandi/blogium-common": "^1.0.0",
+    "@hono-storage/core": "^0.0.12",
+    "@hono-storage/s3": "^0.0.11",
     "@prisma/client": "^5.13.0",
     "@prisma/extension-accelerate": "^1.0.0",
     "hono": "^4.2.7",

@@ -16,6 +16,7 @@ model User {
   posts    Post[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  ProfilePic String?
 }
 
 model Post {

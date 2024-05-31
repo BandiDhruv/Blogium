@@ -47,11 +47,11 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                         <div className="text-slate-400 font-bold text-lg">
                             Author 
                         </div>
-                        <div className="flex justify-evenly px-2 gap-4 pt-2 border-t-2">
-                            <div>
-                                <Avatar name={blog.author.name || "Anonymous"} />
+                        <div className="flex px-1 gap-3 pt-2 border-t-2">
+                            <div className="basis-1/6">
+                                <Avatar name={blog.author.name || "Anonymous"} ProfilePic={blog.author.ProfilePic} />
                             </div>
-                            <div>
+                            <div className="basis-5/6">
                                 <div className="text-xl font-bold">
                                     {blog.author.name || "Anonymous"}
                                 </div>

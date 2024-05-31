@@ -5,15 +5,15 @@ import { useGetUser } from "../hooks";
 
 export const AppBar = () =>{
     const { user }=useGetUser();
-    return <div className="border-b flex justify-between px-10 py-4 items-center ">
+    return <div className="w-full border-b flex justify-between px-10 py-4 items-center ">
         <Link to={'/blogs'} className="cursor pointer">
                 <img src={logo} alt="Logo" className="h-10 w-[8rem]"/>
         </Link>
-        <div>
+        <div className="flex">
             <Link to={"/publish"}>
                 <button type="button" className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-full text-sm px-3 py-1.5 text-center mr-3 mb-2 cursor-pointer">New</button>
             </Link>
-            <Avatar name={user?.name || "Anonymous"} />
+            <Avatar name={user?.name || "Anonymous"} ProfilePic={user?.ProfilePic}/>
         </div>
     </div>
 }

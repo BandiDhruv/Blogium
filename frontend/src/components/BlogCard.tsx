@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import { User } from "../hooks";
 
 interface BlogCardProps{
     id:string,

@@ -36,11 +36,7 @@ export const RightBar: React.FC = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <form onSubmit={handleSubmit}>
-        <input type="file" name="file" onChange={handleFileChange} />
-        <button type="submit">Submit</button>
-      </form>
-      <img src={url} alt="No" />
+      RightBar
     </div>
   );
 };

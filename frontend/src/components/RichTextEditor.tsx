@@ -1,13 +1,13 @@
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
-import Highlight from '@tiptap/extension-Highlight';
+import Highlight from '@tiptap/extension-highlight';
 import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-Underline';
+import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import { BubbleMenu } from '@tiptap/react';
-import Placeholder from '@tiptap/extension-Placeholder';
+import Placeholder from '@tiptap/extension-placeholder';
 
 interface TextEditorProps {
     onChange: (value: string) => void;

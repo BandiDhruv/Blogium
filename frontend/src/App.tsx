@@ -6,10 +6,14 @@ import { SignIn } from "./pages/Signin"
 import { Blogs }from './pages/Blogs'
 import { Publish } from './pages/Publish'
 import { Profile } from './pages/Profile'
+import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
+import { MantineProvider } from '@mantine/core';
+
 function App() {
 
   return (
-    <>
+    <MantineProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/signup' element= {<SignUp />}/>
@@ -20,7 +24,7 @@ function App() {
           <Route path='/myProfile' element= {<Profile />}/>
         </Routes>
       </BrowserRouter>
-    </>
+    </MantineProvider>
   )
 }
 

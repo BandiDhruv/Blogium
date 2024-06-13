@@ -2,7 +2,7 @@ import { Layout } from "../components/Layout/layout"
 import { User, useGetUser } from "../hooks"
 import { LabelledInput } from "../components/Auth"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
-import { TextEditor } from "./Publish"
+import { TextEditors } from "./Publish"
 import axios from "axios"
 import { BACKEND_URL } from "../config"
 import { useNavigate } from "react-router-dom"
@@ -19,7 +19,6 @@ export const Profile = () => {
             setFile(e.target.files[0]);
         }
     };
-    // const [url, setUrl] = useState<string>('');
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!file) {
@@ -37,20 +36,22 @@ export const Profile = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            // console.log('File uploaded successfully:', response.data);
             setUserData(response.data.user);
             alert("Profile Picture Updated SuccessFully")
         } catch (error) {
             console.error('Error uploading file:', error);
         }
     };
+
     useEffect(() => {
         setUserData(user as User)
-    }, [userData,user])
+    }, [user])
+    
     const navigate = useNavigate();
+    
     async function handleUpdate(e: React.MouseEvent<HTMLButtonElement>, userDatas: User) {
         e.preventDefault();
-        // console.log(userDatas);
+        console.log(userDatas);
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/update-user`, userDatas)
             // console.log(response);
@@ -117,7 +118,7 @@ export const Profile = () => {
                     />
                 </div>
                 <div className="flex flex-row justify-center w-full">
-                    <TextEditor
+                    <TextEditors
                         defaultV={user?.catchPhrase}
                         rows={8}
                         cols={80}

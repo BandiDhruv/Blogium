@@ -5,6 +5,7 @@ import { Avatar } from "./BlogCard"
 import { FaEdit } from "react-icons/fa";
 import { EditModal } from "./EditModal";
 import { setWithExpiry } from "../hooks/cache";
+import parse from 'html-react-parser'
 
 export const BlogDetail = ({ blog }: { blog: Blog }) => {
     const { user } = useGetUser();
@@ -26,7 +27,7 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                     <div className="col-span-8 ">
                         <div className="flex justify-between text-5xl font-extrabold">
                             <div>
-                                {blog.title}
+                                {parse(blog.title)}
                             </div>
                         </div>
                         <div className="flex justify-between items-center">
@@ -40,7 +41,7 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                             }
                         </div>
                         <div className="text-l font-medium pt-4">
-                            {blog.content}
+                            {parse(blog.content)}
                         </div>
                     </div>
                     <div className="col-span-4 ">

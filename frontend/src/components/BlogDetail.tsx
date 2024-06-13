@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, ReactNode } from "react";
 import { Blog, useGetUser } from "../hooks"
 import { AppBar } from "./AppBar"
 import { Avatar } from "./BlogCard"
@@ -41,7 +41,7 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                             }
                         </div>
                         <div className="text-l font-medium pt-4">
-                            {parse(blog.content)}
+                                {parse(blog.content)}
                         </div>
                     </div>
                     <div className="col-span-4 ">

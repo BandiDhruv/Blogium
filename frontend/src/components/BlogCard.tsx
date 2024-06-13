@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import parser from 'html-react-parser'
+import { ReactNode } from "react";
 interface BlogCardProps{
     id:string,
     authorName:string,
@@ -10,8 +11,8 @@ interface BlogCardProps{
 }
 export const BlogCard = ({authorName,title,content,publishedDate,id,ProfilePic}:BlogCardProps) => {
     const date:string = publishedDate?.toLocaleString().split('T')[0] || "2030-01-01";
-// console.log(ProfilePic)
-    const contents=parser(content) as string
+    console.log(content)
+    const contents=parser(content) as unknown as Element[];
     return <Link to={`/blog/${id}`}>
     <div className="border-b border-slate-200 p-4 w-full  cursor-pointer">
         <div className="flex items-center">
@@ -29,11 +30,11 @@ export const BlogCard = ({authorName,title,content,publishedDate,id,ProfilePic}:
             {parser(title)}
         </div>
         <div className="text-md font-thin">
-            {contents?.length>150?contents?.slice(0,100) + "...":contents} 
+            {contents[0] as unknown as ReactNode} 
             
         </div>
         <div className="text-slate-400 text-sm font-500 pt-3">
-            {`${Math.ceil(contents?.length/200)} minute(s) read`}
+            {`${Math.ceil(content?.length/200)} minute(s) read`}
         </div>
     </div>
     </Link>

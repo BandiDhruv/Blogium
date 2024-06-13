@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, ReactNode } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Blog, useGetUser } from "../hooks"
 import { AppBar } from "./AppBar"
 import { Avatar } from "./BlogCard"

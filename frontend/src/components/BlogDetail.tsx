@@ -8,7 +8,7 @@ import { setWithExpiry } from "../hooks/cache";
 import parse from 'html-react-parser'
 
 export const BlogDetail = ({ blog }: { blog: Blog }) => {
-    const { user } = useGetUser();
+    const {user} = useGetUser();
     const [modalToggle, setModalToggle] = useState<boolean>(false);
 
     const date = useMemo(() => {
@@ -18,7 +18,7 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
     useEffect(() => {
         setWithExpiry('lastVisitedBlog', blog, 2 * 60 * 60 * 1000);
     }, [blog]);
-
+    console.log(blog)
     return (
         <div>
             <AppBar />
@@ -40,9 +40,18 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                                 </div>
                             }
                         </div>
-                        <div className="text-l font-medium pt-4">
+                        <div className="text-l font-medium pt-4 border-b border-dashed">
                                 {parse(blog.content)}
                         </div>
+                        {blog?.tags?.length > 0 && (
+                            <div className="flex flex-wrap mt-2">
+                            {blog.tags.map((tag, index) => (
+                                <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                {tag}
+                                </span>
+                            ))}
+                            </div>
+                        )}
                     </div>
                     <div className="col-span-4 ">
                         <div className="text-slate-400 font-bold text-lg">

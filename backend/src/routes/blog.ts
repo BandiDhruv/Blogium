@@ -53,6 +53,7 @@ blogRoute.post("/",async(c)=>{
         data:{
             title:body.title,
             content:body.content,
+            tags:body.tags,
             authorId:userId
         }
     }) 
@@ -73,8 +74,7 @@ blogRoute.post("/",async(c)=>{
             },
             created_at:true,
             updated_at:true,
-
-
+            tags:true,
         }
     }) 
     return c.json(returnblog)
@@ -127,6 +127,7 @@ blogRoute.post("/",async(c)=>{
                 id:true,
                 created_at:true,
                 updated_at:true,
+                tags:true,
             }
         }) 
         return c.json({
@@ -163,8 +164,7 @@ blogRoute.post("/",async(c)=>{
                 },
                 created_at:true,
                 updated_at:true,
-
-
+                tags:true,
             }
         }) 
         return c.json({

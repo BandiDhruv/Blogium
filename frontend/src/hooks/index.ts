@@ -15,6 +15,7 @@ export interface Blog{
     }
     created_at:Date,
     updated_at:Date,
+    tags:string[]
 }
 export const useBlog=({id}:{id:string}) => {
     const [loading,setLoading]=useState<Boolean>(true);

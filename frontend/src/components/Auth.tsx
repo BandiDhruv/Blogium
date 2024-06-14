@@ -81,25 +81,28 @@ export interface LabelledInputType {
     placeholder: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     type?: string;
-    defaultV?:string
-    eye?:boolean
-
+    defaultV?: string;
+    eye?: boolean;
+    but?: boolean;
+    onClick?: () => void;
 }
+
 export function LabelledInput({
     label,
     placeholder,
     onChange,
     type,
-    defaultV="",
-    eye=false,
-
+    defaultV = "",
+    eye = false,
+    but = false,
+    onClick,
 }: LabelledInputType) {
     return (
         <div>
-            <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-black ">
+            <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-black">
                 {label}
             </label>
-            <div className="flex relative">
+            <div className="flex relative items-center">
                 <input
                     id={label}
                     onChange={onChange}
@@ -108,17 +111,16 @@ export function LabelledInput({
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2.5"
                     placeholder={placeholder}
                     required
-                    />
+                />
                 {eye && <BsEye className="absolute right-2 top-3 cursor-pointer" onClick={() => {
-                    var x=document.getElementById("Password:");
-                    // console.log(typeof(x))
-                    if(x?.getAttribute("type")=="password"){
-                        x.setAttribute( "type","text")
+                    var x = document.getElementById("Password:");
+                    if (x?.getAttribute("type") === "password") {
+                        x.setAttribute("type", "text");
+                    } else {
+                        x?.setAttribute("type", "password");
                     }
-                    else{
-                        x?.setAttribute("type","password")
-                    }
-                }}/>}
+                }} />}
+                {but && <button onClick={onClick} className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-[1rem] text-sm px-5 text-center mx-2 mb-2.5 cursor-pointer w-[5rem] h-[2rem]">Add</button>}
             </div>
         </div>
     );

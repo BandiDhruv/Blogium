@@ -10,7 +10,7 @@ import { BubbleMenu } from '@tiptap/react';
 import Placeholder from '@tiptap/extension-placeholder';
 
 interface TextEditorProps {
-    onChange: (value: string) => void;
+    onChange: (value: string | string[]) => void;
     label: string;
     className?:string,
     placeholder:string,

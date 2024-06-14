@@ -6,6 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import { EditModal } from "./EditModal";
 import { setWithExpiry } from "../hooks/cache";
 import parse from 'html-react-parser'
+import { Badge } from "@mantine/core";
 
 export const BlogDetail = ({ blog }: { blog: Blog }) => {
     const {user} = useGetUser();
@@ -26,7 +27,7 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                 <div className="grid grid-cols-12 px-10 py-8 w-full max-w-screen-xl ">
                     <div className="col-span-8 ">
                         <div className="flex justify-between text-5xl font-extrabold">
-                            <div>
+                            <div className="text-wrap">
                                 {parse(blog.title)}
                             </div>
                         </div>
@@ -40,15 +41,15 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                                 </div>
                             }
                         </div>
-                        <div className="text-l font-medium pt-4 border-b border-dashed">
-                                {parse(blog.content)}
+                        <div className="font-medium border-b border-dashed py-5 max-w-[95%] overflow-x-auto ">
+                            {parse(blog.content)}
                         </div>
                         {blog?.tags?.length > 0 && (
                             <div className="flex flex-wrap mt-2">
                             {blog.tags.map((tag, index) => (
-                                <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                <Badge key={index} color="black" m={"xs"} >
                                 {tag}
-                                </span>
+                                </Badge>
                             ))}
                             </div>
                         )}

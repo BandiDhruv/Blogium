@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 interface Quote {
     _id: string;
@@ -17,11 +18,22 @@ export const Qoute = () => {
 
 
     useEffect(() => {
-        fetch("https://api.quotable.io/random")
-            .then(response => response.json())
-            .then((data: Quote) => setQuotes(data))
-            .catch(error => console.error('Error fetching quotes:', error));
-    }, []);
+        const fetchQuote = async () => {
+          try {
+            const response = await axios.get<Quote>('https://api.quotable.io/random');
+            if (response.status === 200) {
+              setQuotes(response.data);
+            } else {
+              throw new Error('Failed to fetch quote');
+            }
+          } catch (error) {
+            console.error('Error fetching quote:', error);
+          }
+        };
+    
+        fetchQuote();
+      }, []);
+    
 
     return (
         <div className="bg-slate-200 h-screen flex flex-col justify-center items-center px-16 ">

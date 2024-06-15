@@ -14,9 +14,10 @@ interface TextEditorProps {
     label: string;
     className?:string,
     placeholder:string,
+    defaultV?:string,
   }
   
-  export function TextEditor({ onChange, label,className='',placeholder }: TextEditorProps) {
+  export function TextEditor({ onChange, label,className='',placeholder,defaultV }: TextEditorProps) {
     const editor = useEditor({
         extensions: [StarterKit,
             Underline,
@@ -26,8 +27,9 @@ interface TextEditorProps {
             Highlight,
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
             Placeholder.configure({placeholder:placeholder})
+            
         ],
-        content: '',
+        content: defaultV,
         onUpdate:({editor})=>{
             const html=editor.getHTML();
             onChange(html);
@@ -39,7 +41,7 @@ interface TextEditorProps {
             <label className={`block mb-1 text-[#000000] ${label==='Title'?' text-[1.75rem] font-medium ':label==='Post'?' text-[3.5rem] font-extralarge ':'text-[1rem] font-small'} `}>
                 {label}
             </label>
-            <RichTextEditor  editor={editor} className={className}>
+            <RichTextEditor  editor={editor} className={className} >
                 {editor && (
                     <BubbleMenu editor={editor}>
                         <RichTextEditor.ControlsGroup>
@@ -71,7 +73,7 @@ interface TextEditorProps {
                         </RichTextEditor.ControlsGroup>
                     </BubbleMenu>
                 )}
-                <RichTextEditor.Content />
+                <RichTextEditor.Content defaultValue={defaultV} />
             </RichTextEditor>
         </>
     );

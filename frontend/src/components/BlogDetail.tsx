@@ -47,7 +47,7 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                         {blog?.tags?.length > 0 && (
                             <div className="flex flex-wrap mt-2">
                             {blog.tags.map((tag, index) => (
-                                <Badge key={index} color="black" m={"xs"} >
+                                <Badge key={index} color="indigo" m={"xs"} >
                                 {tag}
                                 </Badge>
                             ))}

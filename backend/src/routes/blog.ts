@@ -99,6 +99,7 @@ blogRoute.post("/",async(c)=>{
         data:{
             title:body.title,
             content:body.content,
+            tags:body.tags
         }
     }) 
     return c.json({

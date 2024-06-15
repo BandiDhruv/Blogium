@@ -22,7 +22,7 @@ export const EditModal = ({
   const [content, setContent] = useState(blog.content);
   const [tags, setTags] = useState<Array<string>>(blog.tags);
   const [tagInput, setTagInput] = useState<string>('');
-console.log(blog);
+  console.log(blog);
   // const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setTitle(event.target.value);
   // };
@@ -40,8 +40,11 @@ console.log(blog);
                 Authorization:`Bearer ${token}`
             }
         });
-        if(!response){alert("some internal error occured");}
+        if(!response){
+          alert("some internal error occured");
+        }
         else {
+            localStorage.removeItem("lastVisitedBlog");
             setModal(!modal);
         }
     }catch(e){

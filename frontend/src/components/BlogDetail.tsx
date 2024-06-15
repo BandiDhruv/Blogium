@@ -13,13 +13,15 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
     const [modalToggle, setModalToggle] = useState<boolean>(false);
 
     const date = useMemo(() => {
+        return blog.created_at?.toLocaleString().split('T')[0] || "2030-01-01";
+    }, [blog.created_at]);
+    const Udate = useMemo(() => {
         return blog.updated_at?.toLocaleString().split('T')[0] || "2030-01-01";
     }, [blog.updated_at]);
-
+    
     useEffect(() => {
         setWithExpiry('lastVisitedBlog', blog, 2 * 60 * 60 * 1000);
     }, [blog]);
-    console.log(blog)
     return (
         <div>
             <AppBar />
@@ -34,6 +36,7 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                         <div className="flex justify-between items-center">
                             <div className="text-slate-500 pt-2">
                                 {`Posted On ${date} `}
+                                {blog.created_at !== blog.updated_at && <div className=" text-slate-500 ">{`Edited On ${Udate}`}</div>}
                             </div>
                             {user?.id === blog.author.id &&
                                 <div className="mr-6">
@@ -41,11 +44,11 @@ export const BlogDetail = ({ blog }: { blog: Blog }) => {
                                 </div>
                             }
                         </div>
-                        <div className="font-medium border-b border-dashed py-5 max-w-[95%] overflow-x-auto ">
+                        <div className="font-medium border-b border-dashed py-5 mt-2 border-t bodred-dashed max-w-[95%] overflow-x-auto ">
                             {parse(blog.content)}
                         </div>
                         {blog?.tags?.length > 0 && (
-                            <div className="flex flex-wrap mt-2">
+                            <div className="flex flex-wrap">
                             {blog.tags.map((tag, index) => (
                                 <Badge key={index} color="indigo" m={"xs"} >
                                 {tag}

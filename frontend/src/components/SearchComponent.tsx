@@ -1,27 +1,30 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { CiSearch } from 'react-icons/ci';
+import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../config';
 import { Blog } from '../hooks';
-import parse from 'html-react-parser'
+import parse from 'html-react-parser';
 import { Spinner } from './Spinner';
+import { setWithExpiry } from '../hooks/cache';
+
 const SearchComponent = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Blog[]>([] as Blog[]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-//   const [error, setError] = useState('');
+  const [dataToLocalStorage, setDataToLocalStorage] = useState<Blog[]>([] as Blog[]);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchResults = async () => {
       if (query.trim() === '') {
-        // setResults([] as Blog[]);
         setShowModal(false);
         return;
       }
 
       setLoading(true);
-    //   setError('');
       const token = localStorage.getItem('token')?.slice(1, -1) || '';
 
       try {
@@ -30,8 +33,8 @@ const SearchComponent = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        setDataToLocalStorage(response.data.blogs);
         const data = response.data.blogs;
-        // console.log(data);
         const parsedData = data.map((blog: Blog) => ({
           ...blog,
           title: parse(blog.title),
@@ -40,22 +43,34 @@ const SearchComponent = () => {
         setResults(parsedData);
         setShowModal(true);
       } catch (err) {
-        
+        console.error('Error during search:', err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchResults();
-    // console.log(query);
   }, [query]);
+
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
-//   console.log(results)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setShowModal(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchContainerRef]);
 
   return (
-    <div className="w-[50%] flex flex-row relative">
+    <div ref={searchContainerRef} className="w-[50%] flex flex-row relative">
       <div className="flex items-center justify-center w-[100%] gap-2 box-shadow bg-slate-100 rounded-l-xl rounded-r-xl px-2">
         <CiSearch size={20} color="gray" />
         <input
@@ -66,25 +81,32 @@ const SearchComponent = () => {
           onChange={handleSearch}
         />
       </div>
-      <div className={`absolute flex flex-col bg-white shadow-lg  items-center justify-center top-8 max-h-[10rem] w-full overflow-y-auto ${showModal?'py-4 my-10':''} `}>
-        {loading && <div><Spinner/></div>}
-        {showModal && results?.length > 0 && (
-          <div className="bg-white shadow-lg rounded-lg">
-            <ul>
-              {results.map((result: Blog) => (
-                <li key={result.id} className="p-2 border-b cursor-pointer">
-                  <p className="font-bold">{result.title}</p>
-                  {/* <p>{result.content}</p> */}
-                  {/* <div className="text-sm text-gray-600"> */}
-                    {/* By: {result.author.name} | {new Date(result.created_at).toLocaleDateString()} */}
-                  {/* </div> */}
-                </li>
-              ))}
-            </ul>
+      <div className="absolute top-12 w-full max-h-[15rem] overflow-y-auto bg-white shadow-lg rounded-lg mt-2">
+        {loading && (
+          <div className="p-4">
+            <Spinner />
           </div>
         )}
+        {showModal && results?.length > 0 && (
+          <ul className="w-full">
+            {results.map((result: Blog, idx: number) => (
+              <li
+                key={result.id}
+                className="w-full p-4 hover:bg-gray-100 flex flex-col items-start justify-center gap-2 cursor-pointer border-b border-gray-200 overflow-hidden"
+                onClick={() => {
+                  setWithExpiry('lastVisitedBlog', dataToLocalStorage[idx], 2 * 60 * 60 * 1000);
+                  setShowModal(false)
+                  navigate(`/blog/${result.id}`);
+                }}
+              >
+                <div className="font-bold text-lg align">{result.title}</div>
+                <div className="text-gray-700 h-14">{result.content}</div>
+              </li>
+            ))}
+          </ul>
+        )}
         {showModal && results?.length === 0 && !loading && (
-          <div className="">
+          <div className="p-4">
             <p>No results found.</p>
           </div>
         )}

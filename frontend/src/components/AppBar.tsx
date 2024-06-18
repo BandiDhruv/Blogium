@@ -3,6 +3,7 @@ import { Avatar } from "./BlogCard";
 import logo from "../assets/logo.png";
 import { useGetUser } from "../hooks";
 import { useState, useEffect, useRef } from "react";
+import SearchComponent from "./SearchComponent";
 
 export const AppBar: React.FC = () => {
     const { user } = useGetUser();
@@ -25,14 +26,16 @@ export const AppBar: React.FC = () => {
             window.removeEventListener("click", handleClickOutside);
         };
     }, []);
+
     return (
         <div className="w-full border-b flex justify-between px-10 py-4 items-center">
             <Link to={'/blogs'} className="cursor pointer">
                 <img src={logo} alt="Logo" className="h-10 w-[8rem]" />
             </Link>
-            <div className="flex">
+            <SearchComponent />
+            <div className="flex items-center">
                 <Link to={"/publish"}>
-                    <button type="button" className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-full text-sm px-3 py-1.5 text-center mr-3 mb-2 cursor-pointer">New</button>
+                    <button type="button" className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-full text-sm px-3 py-1.5 text-center mr-3 cursor-pointer">New</button>
                 </Link>
                 <div className="cursor-pointer flex flex-col relative" onClick={(e) => {e.stopPropagation(); setOpenOptions(!openOptions) }}>
                     <Avatar name={user?.name || "Anonymous"} ProfilePic={user?.ProfilePic} />

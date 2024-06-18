@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -29,4 +30,5 @@ model Post {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   tags      String[] 
+
 }

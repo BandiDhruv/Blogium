@@ -176,3 +176,69 @@ blogRoute.post("/",async(c)=>{
         return c.json({message:"Error while fetching blog post"})
     }
   })
+
+  blogRoute.get("/search/:q",async (c)=>{
+    const query=c.req.param('q');
+    // console.log(query);
+    const prisma = new PrismaClient({
+        datasourceUrl:c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+    try{
+        const blogs= await prisma.post.findMany({
+            where:{
+                OR:[
+                    {
+                        title:{
+                            search:query,
+                            contains:query
+                        }
+                    },
+                    {
+                        content:{
+                            search:query,   
+                            contains:query
+                        }
+                    },
+                    {
+                        tags:{
+                            has:query,
+                        }
+                    },
+                    {
+                        author:{
+                            name:{
+                                search:query,
+                                contains:query,
+                                startsWith:query
+                            }
+                        }
+                    }
+                ]
+            },
+            select:{
+                title:true,
+                content:true,
+                id:true,
+                author:{
+                    select:{
+                        name:true,
+                        id:true,
+                        catchPhrase:true,
+                        ProfilePic:true,
+                    }
+                },
+                created_at:true,
+                updated_at:true,
+                tags:true,
+            }
+        }) 
+        return c.json({
+            blogs,
+        })
+    }catch(e){
+        c.status(411);
+        console.log(e);
+        return c.json({message:"Error while searching",error:e})
+    }
+  })
+

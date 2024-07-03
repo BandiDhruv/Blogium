@@ -7,6 +7,7 @@ import { Blog } from '../hooks';
 import parse from 'html-react-parser';
 import { Spinner } from './Spinner';
 import { setWithExpiry } from '../hooks/cache';
+import useDebounce from '../hooks/debounce';  
 
 const SearchComponent = () => {
   const [query, setQuery] = useState('');
@@ -16,10 +17,11 @@ const SearchComponent = () => {
   const [dataToLocalStorage, setDataToLocalStorage] = useState<Blog[]>([] as Blog[]);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const debouncedQuery = useDebounce(query, 500);  
 
   useEffect(() => {
     const fetchResults = async () => {
-      if (query.trim() === '') {
+      if (debouncedQuery.trim() === '') {
         setShowModal(false);
         return;
       }
@@ -28,7 +30,7 @@ const SearchComponent = () => {
       const token = localStorage.getItem('token')?.slice(1, -1) || '';
 
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/blog/search/${query}`, {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/blog/search/${debouncedQuery}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -50,7 +52,7 @@ const SearchComponent = () => {
     };
 
     fetchResults();
-  }, [query]);
+  }, [debouncedQuery]);
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -83,7 +85,7 @@ const SearchComponent = () => {
       </div>
       <div className="absolute top-12 w-full max-h-[15rem] overflow-y-auto bg-white shadow-lg rounded-lg mt-2">
         {loading && (
-          <div className="p-4">
+          <div className="flex p-4 justify-center">
             <Spinner />
           </div>
         )}
@@ -106,7 +108,7 @@ const SearchComponent = () => {
           </ul>
         )}
         {showModal && results?.length === 0 && !loading && (
-          <div className="p-4">
+          <div className="flex p-4 justify-center">
             <p>No results found.</p>
           </div>
         )}

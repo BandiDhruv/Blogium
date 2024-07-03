@@ -31,9 +31,14 @@ cdn-content delivery networks (eg-cloudfront)
     apan cdn ko source bata dete hai ki ye hai main url jaha pr sab hosted h .... when a req comes to cdn find it in src and cache it than deliver it.
     my req go to my closest pops (point of presence) of cdn and than cdn will ask to src about the data
 }
-
-{ !!ec2 padna!! 
+frontend-cdn (apni files 1 jagah rhegi and from their multiple pops me (cdn) jaegi jab req aaegi or cache hoga and apne aap cache clear bhi ho skta)
+{ !!ec2 padna for backend!! 
     backend ko aws pr nahi.... cdn nahi - kyuki usko cache nahi kar skte kyuki if sabko unki personal details aati hai ek endpoint se to phir cache kyu krna pr haa common data ko kr skte hai
 
     edge network ka concept in backend deployement kyuki edge network bahut jagah deploy krta hai backend ko like cloudfare workers and all
+}
+
+
+{
+    html,css,js mei convert hota h react code when we npm run build and this is how it is hosted everywhere 
 }

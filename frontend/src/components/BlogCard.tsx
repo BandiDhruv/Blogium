@@ -14,7 +14,7 @@ export const BlogCard = ({authorName,title,content,publishedDate,id,ProfilePic}:
     // console.log(content)
     const contents=parser(content) as unknown as Element[];
     return <Link to={`/blog/${id}`}>
-    <div className="border-b border-slate-200 p-4 w-full  cursor-pointer">
+    <div className="border-b border-slate-200 p-4 w-full  cursor-pointer ">
         <div className="flex items-center">
             <div className="flex justify-center flex-col">
                 < Avatar  name={authorName} ProfilePic={ProfilePic?ProfilePic:""}/> 
@@ -29,7 +29,7 @@ export const BlogCard = ({authorName,title,content,publishedDate,id,ProfilePic}:
         <div className="text-xl font-semibold pt-2">
             {parser(title)}
         </div>
-        <div className="text-md font-thin">
+        <div className="text-md font-thin max-h-40 overflow-y-hidden">
             {contents[0] as unknown as ReactNode} 
             
         </div>

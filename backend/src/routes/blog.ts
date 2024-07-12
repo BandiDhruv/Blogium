@@ -3,7 +3,7 @@ import {PrismaClient} from "@prisma/client/edge"
 import {withAccelerate} from "@prisma/extension-accelerate"
 import {verify} from "hono/jwt"
 import { createBlogInput,updateBlogInput } from '@dhruvbandi/blogium-common'
-
+import { VoteType } from '@prisma/client/edge'
 export const blogRoute = new Hono<{
   Bindings:{
     DATABASE_URL:string,
@@ -14,7 +14,7 @@ export const blogRoute = new Hono<{
   }
 }>();
 
-//TODO -> MAKE A REUSABLE COMPONENT FOR GETBYID SO THAT CODE REDUNDANCY REDUCES
+
 
 blogRoute.use("/*",async(c,next)=>{
     const header =c.req.header("authorization") || "";
@@ -37,6 +37,82 @@ blogRoute.use("/*",async(c,next)=>{
     }
   })
 
+
+  blogRoute.post("/vote", async (c) => {
+    const userId = c.get('userId');
+    const body = await c.req.json();
+    const { postId, voteType } = body;
+  
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+  
+    try {
+      const existingVote = await prisma.vote.findFirst({
+        where: {
+          postId: postId,
+          userId: userId,
+        },
+      });
+  
+      if (existingVote) {
+        if (existingVote.voteType === voteType) {
+          await prisma.vote.delete({
+            where: { id: existingVote.id },
+          });
+        } else {
+          await prisma.vote.update({
+            where: { id: existingVote.id },
+            data: { voteType },
+          });
+        }
+      } else {
+        await prisma.vote.create({
+          data: {
+            postId,
+            userId,
+            voteType,
+          },
+        });
+      }
+  
+      const upvotes = await prisma.vote.count({
+        where: { postId, voteType: VoteType.UPVOTE },
+      });
+  
+      const downvotes = await prisma.vote.count({
+        where: { postId, voteType: VoteType.DOWNVOTE },
+      });
+  
+      const updatedBlog = await prisma.post.findUnique({
+        where: { id: postId },
+        select:{
+            content:true,
+            title:true,
+            author:{
+                select:{
+                    name:true,
+                    id:true,
+                    catchPhrase:true,
+                    ProfilePic:true,
+                }
+            },
+            id:true,
+            created_at:true,
+            updated_at:true,
+            tags:true,
+            comments:true,
+            votes:true,}
+      });
+  
+      return c.json({ upvotes, downvotes, blog: updatedBlog });
+    } catch (error) {
+      console.error("Failed to vote on the post", error);
+      c.status(500);
+      c.json({ error: 'Failed to vote on the post' });
+    }
+  });
+  
 blogRoute.post("/",async(c)=>{
     const userId = c.get('userId');
     const body = await c.req.json();
@@ -129,6 +205,8 @@ blogRoute.post("/",async(c)=>{
                 created_at:true,
                 updated_at:true,
                 tags:true,
+                comments:true,
+                votes:true,
             }
         }) 
         return c.json({
@@ -166,6 +244,8 @@ blogRoute.post("/",async(c)=>{
                 created_at:true,
                 updated_at:true,
                 tags:true,
+                comments:true,
+                votes:true
             }
         }) 
         return c.json({
@@ -189,14 +269,18 @@ blogRoute.post("/",async(c)=>{
                 OR:[
                     {
                         title:{
+                            startsWith:query,
                             search:query,
-                            contains:query
+                            contains:query,
+                            mode:'insensitive'
                         }
                     },
                     {
                         content:{
+                            startsWith:query,
                             search:query,   
-                            contains:query
+                            contains:query,
+                            mode:'insensitive'
                         }
                     },
                     {
@@ -209,7 +293,8 @@ blogRoute.post("/",async(c)=>{
                             name:{
                                 search:query,
                                 contains:query,
-                                startsWith:query
+                                startsWith:query,
+                                mode:"insensitive"
                             }
                         }
                     }
@@ -230,6 +315,8 @@ blogRoute.post("/",async(c)=>{
                 created_at:true,
                 updated_at:true,
                 tags:true,
+                comments:true,
+                votes:true,
             }
         }) 
         return c.json({

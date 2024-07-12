@@ -7,8 +7,8 @@ import { getWithExpiry } from "../hooks/cache";
 
 export const Blog = () => {
     const {id} = useParams();
-    const {blog, loading} = useBlog({id: id || ""});
-    const [cachedBlog, setCachedBlog] = useState<B | null>(null);
+    const {blog, loading,setBlog} = useBlog({id: id || ""});
+    const [cachedBlog, setCachedBlog] = useState<B | undefined>();
 
     useEffect(() => {
         const cachedBlogData = getWithExpiry('lastVisitedBlog');
@@ -27,7 +27,7 @@ export const Blog = () => {
 
     return (
         <div>
-            {cachedBlog ? <BlogDetail blog={cachedBlog}/> : blog && <BlogDetail blog={blog}/>}
+            {cachedBlog ? <BlogDetail blog={cachedBlog} setBlog={setCachedBlog}/> : blog && <BlogDetail blog={blog} setBlog={setBlog}/>}
         </div>
     );
 }

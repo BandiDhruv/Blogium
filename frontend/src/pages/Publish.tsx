@@ -3,7 +3,6 @@ import { AppBar } from '../components/AppBar';
 import { BACKEND_URL } from '../config';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { getWithExpiry, setWithExpiry } from '../hooks/cache';
 import { TextEditor } from '../components/RichTextEditor'; 
 import { Badge } from '@mantine/core';
 import { LabelledInput } from '../components/Auth';
@@ -32,9 +31,6 @@ export const Publish = () => {
         },
       });
       const newBlog = response.data;
-      const cachedBlogs = getWithExpiry('blogs') || [];
-      const updatedBlogs = [newBlog, ...cachedBlogs];
-      setWithExpiry('blogs', updatedBlogs, 2 * 60 * 60 * 1000); 
 
       navigate(`/blog/${newBlog.id}`);
     } catch (error) {

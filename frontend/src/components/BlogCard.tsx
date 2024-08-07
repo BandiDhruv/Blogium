@@ -11,10 +11,9 @@ interface BlogCardProps{
 }
 export const BlogCard = ({authorName,title,content,publishedDate,id,ProfilePic}:BlogCardProps) => {
     const date:string = publishedDate?.toLocaleString().split('T')[0] || "2030-01-01";
-    // console.log(content)
     const contents=parser(content) as unknown as Element[];
     return <Link to={`/blog/${id}`}>
-    <div className="border-b border-slate-200 p-4 w-full  cursor-pointer ">
+    <div className="border-b border-slate-200 p-4 w-full  cursor-pointer  ">
         <div className="flex items-center">
             <div className="flex justify-center flex-col">
                 < Avatar  name={authorName} ProfilePic={ProfilePic?ProfilePic:""}/> 

@@ -41,7 +41,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                             label="Name"
                             placeholder="Your Name..."
                             onChange={(e) => {
-                                setPostInputs((c) => ({
+                                setPostInputs((c:SignupInput) => ({
                                     ...c,
                                     name: e.target.value,
                                 }));
@@ -51,7 +51,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                             label="Email"
                             placeholder="Your Email..."
                             onChange={(e) => {
-                                setPostInputs((c) => ({
+                                setPostInputs((c:SignupInput) => ({
                                     ...c,
                                     email: e.target.value,
                                 }));
@@ -62,7 +62,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                             type={"password"}
                             placeholder="Your Password..."
                             onChange={(e) => {
-                                setPostInputs((c) => ({
+                                setPostInputs((c:SignupInput) => ({
                                     ...c,
                                     password: e.target.value,
                                 }));
@@ -99,12 +99,15 @@ export function LabelledInput({
 }: LabelledInputType) {
     return (
         <div>
-            <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-black">
+            <label
+                htmlFor={label} 
+                className="block mb-1 text-sm font-medium text-gray-900 dark:text-black"
+            >
                 {label}
             </label>
             <div className="flex relative items-center">
                 <input
-                    id={label}
+                    id={label} 
                     onChange={onChange}
                     defaultValue={defaultV}
                     type={type || "text"}
@@ -112,15 +115,27 @@ export function LabelledInput({
                     placeholder={placeholder}
                     required
                 />
-                {eye && <BsEye className="absolute right-2 top-3 cursor-pointer" onClick={() => {
-                    var x = document.getElementById("Password:");
-                    if (x?.getAttribute("type") === "password") {
-                        x.setAttribute("type", "text");
-                    } else {
-                        x?.setAttribute("type", "password");
-                    }
-                }} />}
-                {but && <button onClick={onClick} className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-[1rem] text-sm px-5 text-center mx-2 mb-2.5 cursor-pointer w-[5rem] h-[2rem]">Add</button>}
+                {eye && (
+                    <BsEye
+                        className="absolute right-2 top-3 cursor-pointer"
+                        onClick={() => {
+                            const x = document.getElementById("Password:");
+                            if (x?.getAttribute("type") === "password") {
+                                x.setAttribute("type", "text");
+                            } else {
+                                x?.setAttribute("type", "password");
+                            }
+                        }}
+                    />
+                )}
+                {but && (
+                    <button
+                        onClick={onClick}
+                        className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-[1rem] text-sm px-5 text-center mx-2 mb-2.5 cursor-pointer w-[5rem] h-[2rem]"
+                    >
+                        Add
+                    </button>
+                )}
             </div>
         </div>
     );
